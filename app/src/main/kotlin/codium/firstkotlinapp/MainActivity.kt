@@ -46,6 +46,15 @@ open class MainActivity : AppCompatActivity() {
             }.lparams(width = wrapContent, height = wrapContent) {
                 alignParentBottom()
             }
+            button("Camera") {
+                id = 5
+                onClick {
+                    toCameraActivity()
+                }
+            }.lparams(width = wrapContent, height = wrapContent) {
+                alignParentBottom()
+                alignParentEnd()
+            }
         }
 
 
@@ -54,6 +63,11 @@ open class MainActivity : AppCompatActivity() {
 
     private fun toAnotherActivity(){
         val intent = Intent(this, AnotherActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun toCameraActivity(){
+        val intent = Intent(this, CameraActivity::class.java)
         startActivity(intent)
     }
 
