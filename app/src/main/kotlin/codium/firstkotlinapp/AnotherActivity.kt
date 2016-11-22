@@ -20,11 +20,21 @@ class AnotherActivity : MainActivity() {
                 alignParentStart()
                 alignParentEnd()
             }
+            button("Finish") {
+                id = Ids.button_finish
+                onClick {
+                    toast("Get Back")
+                    finish()
+                }
+            }.lparams(width = wrapContent, height = wrapContent) {
+                alignParentBottom()
+            }
         }
     }
 
     private object Ids {
         val editText = 1
+        val button_finish = 1
     }
 
 }
