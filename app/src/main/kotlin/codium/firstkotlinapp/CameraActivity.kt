@@ -11,9 +11,8 @@ import android.graphics.Bitmap
 import android.widget.ImageView
 
 
-class CameraActivity : MainActivity(){
+class CameraActivity(var preview_image: ImageView? = null) : MainActivity(){
     val REQUEST_IMAGE_CAPTURE = 1
-    var preview_image: ImageView? = null
 
     private fun dispatchTakePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -38,7 +37,9 @@ class CameraActivity : MainActivity(){
             preview_image = imageView {}.lparams(width = wrapContent, height = wrapContent) {
                 above(id=2)
                 centerHorizontally()
-                alignParentEnd()
+                alignParentTop()
+                alignParentRight()
+                alignParentLeft()
             }
             button("Take Picture") {
                 id = CameraActivity.Ids.button_take_picture
@@ -58,9 +59,9 @@ class CameraActivity : MainActivity(){
     }
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            val extras = data.extras
+            val extras = data!!.extras
             val imageBitmap = extras.get("data") as Bitmap
             preview_image!!.setImageBitmap(imageBitmap)
         }
