@@ -1,11 +1,14 @@
 package codium.firstkotlinapp
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.RelativeLayout
+import android.widget.Toast
 import org.jetbrains.anko.*
 
-class MainActivity : AppCompatActivity() {
+open class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,8 +35,26 @@ class MainActivity : AppCompatActivity() {
                 sameTop(Ids.button)
                 alignParentLeft()
                 alignParentStart()
+
+            }
+            button("New Activity") {
+                id = 4
+                onClick {
+                    toAnotherActivity()
+                    toast("Hello, New Activity!")
+                }
+            }.lparams(width = wrapContent, height = wrapContent) {
+                alignParentBottom()
             }
         }
+
+
+
+    }
+
+    private fun toAnotherActivity(){
+        val intent = Intent(this, AnotherActivity::class.java)
+        startActivity(intent)
     }
 
     private object Ids {
