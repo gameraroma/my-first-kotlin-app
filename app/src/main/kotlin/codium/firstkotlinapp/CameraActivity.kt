@@ -4,14 +4,12 @@ import android.app.Activity
 import android.os.Bundle
 import org.jetbrains.anko.*
 import android.content.Intent
-import android.graphics.Paint
-import android.provider.MediaStore.ACTION_IMAGE_CAPTURE
 import android.provider.MediaStore
 import android.graphics.Bitmap
-import android.widget.ImageView
+import kotlinx.android.synthetic.main.activity_camera.*
 
 
-class CameraActivity(var preview_image: ImageView? = null) : MainActivity(){
+class CameraActivity() : MainActivity(){
     val REQUEST_IMAGE_CAPTURE = 1
 
     private fun dispatchTakePictureIntent() {
@@ -23,39 +21,16 @@ class CameraActivity(var preview_image: ImageView? = null) : MainActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_camera)
 
-        relativeLayout {
-            button("Finish") {
-                id = CameraActivity.Ids.button_finish
-                onClick {
-                    toast("Get Back")
-                    finish()
-                }
-            }.lparams(width = wrapContent, height = wrapContent) {
-                alignParentBottom()
-            }
-            preview_image = imageView {}.lparams(width = wrapContent, height = wrapContent) {
-                above(id=2)
-                centerHorizontally()
-                alignParentTop()
-                alignParentRight()
-                alignParentLeft()
-            }
-            button("Take Picture") {
-                id = CameraActivity.Ids.button_take_picture
-                onClick {
-                    dispatchTakePictureIntent()
-                }
-            }.lparams(width = wrapContent, height = wrapContent) {
-                alignParentBottom()
-                centerHorizontally()
-            }
+        button_finish.setOnClickListener {
+            toast("Get Back")
+            finish()
         }
-    }
 
-    private object Ids {
-        val button_finish = 1
-        val button_take_picture = 2
+        button_take_picture.setOnClickListener {
+            dispatchTakePictureIntent()
+        }
     }
 
 
@@ -63,7 +38,7 @@ class CameraActivity(var preview_image: ImageView? = null) : MainActivity(){
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             val extras = data!!.extras
             val imageBitmap = extras.get("data") as Bitmap
-            preview_image!!.setImageBitmap(imageBitmap)
+            preview_image.setImageBitmap(imageBitmap)
         }
     }
 }
