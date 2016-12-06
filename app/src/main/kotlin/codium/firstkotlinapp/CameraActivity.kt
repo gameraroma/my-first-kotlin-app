@@ -5,18 +5,22 @@ import android.os.Bundle
 import org.jetbrains.anko.*
 import android.content.Intent
 import android.provider.MediaStore
-import android.graphics.Bitmap
 import kotlinx.android.synthetic.main.activity_camera.*
 
 
 class CameraActivity() : MainActivity(){
-    val REQUEST_IMAGE_CAPTURE = 1
+    val REQUEST_IMAGE = 1
 
     private fun dispatchTakePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (takePictureIntent.resolveActivity(packageManager) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE)
         }
+    }
+
+    private fun dispatchGetPictureIntent() {
+        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(galleryIntent, REQUEST_IMAGE)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,14 +35,17 @@ class CameraActivity() : MainActivity(){
         button_take_picture.setOnClickListener {
             dispatchTakePictureIntent()
         }
+
+        button_gallery.setOnClickListener {
+            dispatchGetPictureIntent()
+        }
     }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            val extras = data!!.extras
-            val imageBitmap = extras.get("data") as Bitmap
-            preview_image.setImageBitmap(imageBitmap)
+        if (requestCode == REQUEST_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
+            val selectedImage = data.data
+            preview_image.setImageURI(selectedImage)
         }
     }
 }
