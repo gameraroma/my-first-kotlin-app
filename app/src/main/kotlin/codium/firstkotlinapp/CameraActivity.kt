@@ -5,6 +5,7 @@ import android.os.Bundle
 import org.jetbrains.anko.*
 import android.content.Intent
 import android.provider.MediaStore
+import android.widget.PopupMenu
 import kotlinx.android.synthetic.main.activity_camera.*
 
 
@@ -39,6 +40,17 @@ class CameraActivity() : MainActivity(){
         button_gallery.setOnClickListener {
             dispatchGetPictureIntent()
         }
+
+        button_upload.setOnClickListener {
+            val popup = PopupMenu(this, button_upload)
+            popup.setOnMenuItemClickListener { item ->
+                toast("You Clicked : " + item.title)
+                true
+            }
+            popup.menuInflater.inflate(R.layout.select_image_from, popup.menu)
+            popup.show()
+        }
+
     }
 
 
